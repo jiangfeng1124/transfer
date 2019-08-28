@@ -12,8 +12,8 @@ Code and data for the EMNLP 2018 paper: [Multi-Source Domain Adaptation with Mix
 ### References
 
 ```
-@InProceedings{guo2018moe,
-  author = "Guo, Jiang and Shah, Darsh and Barzilay, Regina",
+@InProceedings{guo2018multi,
+  author = "Guo, Jiang and Shah, Darsh J and Barzilay, Regina",
   title = "Multi-Source Domain Adaptation with Mixture of Experts",
   booktitle = "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing",
   year = "2018",
