@@ -654,7 +654,7 @@ def train(args):
         if curr_dev >= best_dev:
             best_dev = curr_dev
             best_test = curr_test
-            print confusion_mat
+            print(confusion_mat)
             if args.save_model:
                 say(colored("Save model to {}\n".format(args.save_model + ".best"), 'red'))
                 torch.save([encoder, classifiers, Us, Ps, Ns], args.save_model + ".best")
@@ -667,14 +667,14 @@ def test_mahalanobis_metric():
     S = torch.FloatTensor(4, 5).normal_()
     p = Variable(p)# .cuda()
     S = Variable(S)# .cuda()
-    print p, S
+    print(p, S)
     encoder = nn.Sequential(nn.Linear(5, 5), nn.ReLU())
     encoder = encoder# .cuda()
     nn.init.xavier_normal(encoder[0].weight)
     nn.init.constant(encoder[0].bias, 0.1)
-    print encoder[0].weight
+    print(encoder[0].weight)
     d = mahalanobis_metric(p, S, args, encoder)
-    print d
+    print(d)
 
 import argparse
 if __name__ == '__main__':
