@@ -411,9 +411,9 @@ if __name__ == "__main__":
     argparser.add_argument("--encoder", "-m", type=str, required=True, help="encoder type")
     argparser.add_argument("--critic", type=str, default="dann")
     argparser.add_argument("--advreg", action="store_true")
-    argparser.add_argument("--train", type=str,
+    argparser.add_argument("--train", type=str, required=True,
                            help="multi-source training domains, separated with comma (,)")
-    argparser.add_argument("--test", type=str, help="test domain")
+    argparser.add_argument("--test", type=str, required=True, help="test domain")
     argparser.add_argument("--eval_only", action="store_true")
     argparser.add_argument("--batch_size", type=int, default=32)
     argparser.add_argument("--batch_size_d", type=int, default=32)

@@ -2,6 +2,30 @@ Code and data for the EMNLP 2018 paper: [Multi-Source Domain Adaptation with Mix
 
 ### Running
 
+```
+cd msda-src
+python amazon-chen/senti_unified.py
+options: [-h] [--cuda] --encoder ENCODER [--critic CRITIC]
+         [--advreg] --train TRAIN --test TEST [--eval_only]
+         [--batch_size BATCH_SIZE]
+         [--batch_size_d BATCH_SIZE_D] [--max_epoch MAX_EPOCH]
+         [--optim OPTIM] [--lr LR] [--lr_d LR_D]
+         [--lambda_critic LAMBDA_CRITIC]
+         [--noise_radius NOISE_RADIUS]
+         [--load_model LOAD_MODEL] [--save_model SAVE_MODEL]
+         [--save_image SAVE_IMAGE] [--visualize] [--cond COND]
+
+python amazon-chen/senti_moe.py
+options: [-h] [--cuda] --train TRAIN --test TEST [--eval_only]
+         [--critic CRITIC] [--batch_size BATCH_SIZE]
+         [--batch_size_d BATCH_SIZE_D] [--max_epoch MAX_EPOCH]
+         [--lr LR] [--lr_d LR_D] [--lambda_critic LAMBDA_CRITIC]
+         [--lambda_gp LAMBDA_GP] [--lambda_moe LAMBDA_MOE]
+         [--m_rank M_RANK] [--lambda_entropy LAMBDA_ENTROPY]
+         [--load_model LOAD_MODEL] [--save_model SAVE_MODEL]
+         [--metric METRIC]
+```
+
 (to be updated to python3+ and latest versions of pytorch)
 
 ### Dependencies

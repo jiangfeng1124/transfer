@@ -680,9 +680,9 @@ import argparse
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description="Learning to Adapt from Multi-Source Domains")
     argparser.add_argument("--cuda", action="store_true")
-    argparser.add_argument("--train", type=str,
+    argparser.add_argument("--train", type=str, required=True,
                            help="multi-source domains for training, separated with (,)")
-    argparser.add_argument("--test", type=str,
+    argparser.add_argument("--test", type=str, required=True,
                            help="target domain for testing")
     argparser.add_argument("--eval_only", action="store_true")
     argparser.add_argument("--critic", type=str, default="mmd")
