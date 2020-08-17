@@ -26,6 +26,12 @@ options: [-h] [--cuda] --train TRAIN --test TEST [--eval_only]
          [--m_rank M_RANK] [--lambda_entropy LAMBDA_ENTROPY]
          [--load_model LOAD_MODEL] [--save_model SAVE_MODEL]
          [--metric METRIC]
+
+Example hyper-parameters for D,E,K->B (w/o MMD):
+  --train dvd,electronics,kitchen --test books
+  --max_epoch 50 --batch_size 32
+  --lambda_moe 0.8 --m_rank 50 --lambda_entropy 0.1
+  --lambda_critic 0
 ```
 
 Note: The official Chen12 dataset doesn't contain a dev split. To perform hyper-parameter selection, you should create multiple folds by randomly splitting dev sets (1/10) from the (multi-source) training data as a means of cross-validation. They follow the same naming convention of `${domain}_dev.svmlight` under the same directory of the training and test sets.
