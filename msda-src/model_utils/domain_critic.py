@@ -6,7 +6,7 @@ import torch.autograd as autograd
 from torch.autograd import Variable
 import torch.nn.functional as F
 
-from flip_gradient import flip_gradient
+from .flip_gradient import flip_gradient
 
 from functools import partial
 import utils

@@ -1,12 +1,11 @@
 
-from .dan import DAN
 from .lstm import LSTM
 from .cnn import CNN
 from .mlp import MLP
 from .tagger import Tagger
+# from .flip_gradient import flip_gradient
 
 MODEL_CLASS = {
-    'dan': DAN,
     'lstm' : LSTM,
     'gru' : LSTM,
     'cnn' : CNN,

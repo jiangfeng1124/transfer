@@ -270,11 +270,11 @@ def train(args):
     say("\n{}\n\n".format(gan_gen))
     say("\n{}\n\n".format(gan_disc))
 
-    print encoder.state_dict().keys()
-    print critic.state_dict().keys()
-    print classifier.state_dict().keys()
-    print gan_gen.state_dict().keys()
-    print gan_disc.state_dict().keys()
+    print(encoder.state_dict().keys())
+    print(critic.state_dict().keys())
+    print(classifier.state_dict().keys())
+    print(gan_gen.state_dict().keys())
+    print(gan_disc.state_dict().keys())
 
     requires_grad = lambda x : x.requires_grad
     task_params = list(encoder.parameters()) + \
@@ -326,7 +326,7 @@ def train(args):
         if curr_dev >= best_dev:
             best_dev = curr_dev
             best_test = curr_test
-            print confusion_mat
+            print(confusion_mat)
             if args.save_model:
                 say(colored("Save model to {}\n".format(args.save_model + ".best"), 'red'))
                 torch.save([encoder, classifier], args.save_model + ".best")
@@ -380,7 +380,7 @@ def visualize(args):
 
     tsne = TSNE(perplexity=30, n_components=2, n_iter=3300)
     vdata = tsne.fit_transform(h_both)
-    print vdata.shape, source_num
+    print(vdata.shape, source_num)
     torch.save([vdata, y_both, source_num], 'vis/%s-%s-mdan.vdata' % (args.train, args.test))
     plot_embedding(vdata, y_both, source_num, args.save_image)
 
@@ -403,7 +403,7 @@ def predict(args):
 
     acc, confusion_mat, _  = evaluate(encoder, classifier, test_loader, args)
     say(colored("Test accuracy {:.4f}\n".format(acc), 'red'))
-    print confusion_mat
+    print(confusion_mat)
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Unsupervised Domain Adaptation")

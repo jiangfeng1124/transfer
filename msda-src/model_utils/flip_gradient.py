@@ -41,7 +41,7 @@ if __name__ == '__main__':
         output = layer2(grl_hx)
 
         loss = criterion(output, y)
-        print loss
+        print(loss)
         loss.backward()
         optimizer.step()
 
