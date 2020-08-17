@@ -3,7 +3,6 @@ from .lstm import LSTM
 from .cnn import CNN
 from .mlp import MLP
 from .tagger import Tagger
-# from .flip_gradient import flip_gradient
 
 MODEL_CLASS = {
     'lstm' : LSTM,
