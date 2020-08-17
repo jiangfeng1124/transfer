@@ -28,7 +28,7 @@ options: [-h] [--cuda] --train TRAIN --test TEST [--eval_only]
          [--metric METRIC]
 ```
 
-Note: The official Chen12 dataset doesn't contain a dev split, you should create it by randomly select a small subset (1/10) from the (multi-source) training data multiple times as a means of cross-validation. They follow the same naming convention of `${domain}_dev.svmlight` under the same directory as training and test set.
+Note: The official Chen12 dataset doesn't contain a dev split, you should create it by randomly select a small subset (1/10) from the (multi-source) training data multiple times as a means of cross-validation. They follow the same naming convention of `${domain}_dev.svmlight` under the same directory of the training and test sets.
 
 ### Dependencies
 * Pytorch 0.3
