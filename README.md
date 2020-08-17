@@ -2,6 +2,8 @@ Code and data for the EMNLP 2018 paper: [Multi-Source Domain Adaptation with Mix
 
 ### Running
 
+(to be updated to python3+ and latest versions of pytorch)
+
 ```
 cd msda-src
 python amazon-chen/senti_unified.py
@@ -27,8 +29,6 @@ options: [-h] [--cuda] --train TRAIN --test TEST [--eval_only]
 ```
 
 Note: The official Chen12 dataset doesn't contain a dev split, you should create it by randomly select a small subset (1/10) from the (multi-source) training data multiple times as a means of cross-validation.
-
-(to be updated to python3+ and latest versions of pytorch)
 
 ### Dependencies
 * Pytorch 0.3
