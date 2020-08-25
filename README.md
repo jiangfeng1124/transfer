@@ -17,7 +17,7 @@ options: [-h] [--cuda] --encoder ENCODER [--critic CRITIC]
          [--load_model LOAD_MODEL] [--save_model SAVE_MODEL]
          [--save_image SAVE_IMAGE] [--visualize] [--cond COND]
 
-python amazon-chen/senti_moe.py
+python amazon-chen/senti_moe.py (see train_moe.sh)
 options: [-h] [--cuda] --train TRAIN --test TEST [--eval_only]
          [--critic CRITIC] [--batch_size BATCH_SIZE]
          [--batch_size_d BATCH_SIZE_D] [--max_epoch MAX_EPOCH]
@@ -37,7 +37,7 @@ Example hyper-parameters for D,E,K->B (w/o MMD):
 Note: The official Chen12 dataset doesn't contain a dev split. To perform hyper-parameter selection, you should create multiple folds by randomly splitting dev sets (1/10) from the (multi-source) training data as a means of cross-validation. They follow the same naming convention of `${domain}_dev.svmlight` under the same directory of the training and test sets.
 
 ### Dependencies
-* Pytorch 0.3
+* Pytorch 0.3/0.4
 * sklearn
 * termcolor
 * python 2.X
