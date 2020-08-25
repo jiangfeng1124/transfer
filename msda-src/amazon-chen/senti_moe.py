@@ -158,7 +158,7 @@ def biaffine_metric(p, S, U, W, V, args, encoder = None):
     biaffine_distances = p.mm(U).mm(mu_S.t()) + p.mm(W) + mu_S.mm(V) # extra components
     return biaffine_distances.squeeze(1).clamp(-10, 10)
 
-DATA_DIR = "../../msda-data/amazon/chen12"
+DATA_DIR = "../msda-data/amazon/chen12"
 
 def train_epoch(iter_cnt, encoder, classifiers, critic, mats, data_loaders, args, optim_model):
     map(lambda m: m.train(), [encoder, critic] + classifiers)
@@ -435,7 +435,9 @@ def predict(args):
     # args = argparser.parse_args()
     # say(args)
     if args.cuda:
-        map(lambda m: m.cuda(), [encoder] + classifiers)
+        # map(lambda m: m.cuda(), [encoder] + classifiers)
+        encoder = encoder.cuda()
+        classifiers = [x.cuda() for x in classifiers]
         Us = [ U.cuda() for U in Us ]
         Ps = [ P.cuda() for P in Ps ]
         Ns = [ N.cuda() for N in Ns ]
@@ -520,21 +522,21 @@ def train(args):
         if args.metric == "biaffine":
             U = torch.FloatTensor(encoder.n_d, encoder.n_d)
             W = torch.FloatTensor(encoder.n_d, 1)
-            nn.init.xavier_uniform(W)
+            nn.init.xavier_uniform_(W)
             Ws.append(W)
             V = torch.FloatTensor(encoder.n_d, 1)
-            nn.init.xavier_uniform(V)
+            nn.init.xavier_uniform_(V)
             Vs.append(V)
         else:
             U = torch.FloatTensor(encoder.n_d, args.m_rank)
 
-        nn.init.xavier_uniform(U)
+        nn.init.xavier_uniform_(U)
         Us.append(U)
         P = torch.FloatTensor(encoder.n_d, args.m_rank)
-        nn.init.xavier_uniform(P)
+        nn.init.xavier_uniform_(P)
         Ps.append(P)
         N = torch.FloatTensor(encoder.n_d, args.m_rank)
-        nn.init.xavier_uniform(N)
+        nn.init.xavier_uniform_(N)
         Ns.append(N)
         # Ms.append(U.mm(U.t()))
 
@@ -571,8 +573,8 @@ def train(args):
     classifiers = []
     for source in source_train_sets:
         classifier = nn.Linear(encoder.n_out, 2) # binary classification
-        nn.init.xavier_normal(classifier.weight)
-        nn.init.constant(classifier.bias, 0.1)
+        nn.init.xavier_normal_(classifier.weight)
+        nn.init.constant_(classifier.bias, 0.1)
         classifiers.append(classifier)
 
     critic = critic_class(encoder, args)
@@ -582,7 +584,10 @@ def train(args):
     #     torch.save([encoder, classifiers, Us, Ps, Ns], args.save_model + ".init")
 
     if args.cuda:
-        map(lambda m: m.cuda(), [encoder, critic] + classifiers)
+        # map(lambda m: m.cuda(), [encoder, critic] + classifiers)
+        encoder = encoder.cuda()
+        critic = critic.cuda()
+        classifiers = [x.cuda() for x in classifiers]
         Us = [ Variable(U.cuda(), requires_grad=True) for U in Us ]
         Ps = [ Variable(P.cuda(), requires_grad=True) for P in Ps ]
         Ns = [ Variable(N.cuda(), requires_grad=True) for N in Ns ]
@@ -670,8 +675,8 @@ def test_mahalanobis_metric():
     print(p, S)
     encoder = nn.Sequential(nn.Linear(5, 5), nn.ReLU())
     encoder = encoder# .cuda()
-    nn.init.xavier_normal(encoder[0].weight)
-    nn.init.constant(encoder[0].bias, 0.1)
+    nn.init.xavier_normal_(encoder[0].weight)
+    nn.init.constant_(encoder[0].bias, 0.1)
     print(encoder[0].weight)
     d = mahalanobis_metric(p, S, args, encoder)
     print(d)

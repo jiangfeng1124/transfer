@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from .flip_gradient import flip_gradient
 
 from functools import partial
-import utils
+from .utils import gaussian_kernel_matrix, maximum_mean_discrepancy
 
 class ClassificationD(nn.Module):
     @staticmethod
@@ -31,8 +31,8 @@ class ClassificationD(nn.Module):
 
         for module in self.seq:
             if isinstance(module, nn.Linear):
-                nn.init.xavier_normal(module.weight)
-                nn.init.constant(module.bias, 0.1)
+                nn.init.xavier_normal_(module.weight)
+                nn.init.constant_(module.bias, 0.1)
                 # module.bias.requires_grad = False
 
     def forward(self, x):
@@ -56,10 +56,10 @@ class MMD(nn.Module):
         ])
         if configs.cuda:
             self.sigmas = self.sigmas.cuda()
-        self.gaussian_kernel = partial(utils.gaussian_kernel_matrix, sigmas=self.sigmas)
+        self.gaussian_kernel = partial(gaussian_kernel_matrix, sigmas=self.sigmas)
 
     def forward(self, hs, ht):
-        loss_value = utils.maximum_mean_discrepancy(hs, ht, kernel=self.gaussian_kernel)
+        loss_value = maximum_mean_discrepancy(hs, ht, kernel=self.gaussian_kernel)
         return torch.clamp(loss_value, min=1e-4)
 
 class CoralD(nn.Module):
@@ -105,8 +105,8 @@ class WassersteinD(nn.Module):
 
         for module in self.seq:
             if isinstance(module, nn.Linear):
-                nn.init.xavier_normal(module.weight)
-                nn.init.constant(module.bias, 0.1)
+                nn.init.xavier_normal_(module.weight)
+                nn.init.constant_(module.bias, 0.1)
 
     def forward(self, hs, ht):
         # self.clip_weights()

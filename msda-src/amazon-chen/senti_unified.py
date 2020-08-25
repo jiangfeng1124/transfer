@@ -25,7 +25,7 @@ from utils.op import one_hot
 
 # from flip_gradient import flip_gradient
 
-DATA_DIR = "../../msda-data/amazon/chen12"
+DATA_DIR = "../msda-data/amazon/chen12"
 
 def train_epoch(iter_cnt, encoder, classifier, critic, train_loaders, target_d_loader, valid_loader, args, optimizer):
     encoder.train()
@@ -251,8 +251,8 @@ def train(args):
     encoder = encoder_class(args)
     critic = critic_class(encoder, args)
     classifier = nn.Linear(encoder.n_out, 2) # binary classification
-    nn.init.xavier_normal(classifier.weight)
-    nn.init.constant(classifier.bias, 0.1)
+    nn.init.xavier_normal_(classifier.weight)
+    nn.init.constant_(classifier.bias, 0.1)
 
     gan_gen = encoder_class(args)
     gan_disc = MMD(gan_gen, args)
@@ -389,7 +389,9 @@ def predict(args):
     map(lambda m: m.eval(), [encoder, classifier])
 
     if args.cuda:
-        map(lambda m: m.cuda(), [encoder, classifier])
+        # map(lambda m: m.cuda(), [encoder, classifier])
+        encoder = encoder.cuda()
+        classifier = classifier.cuda()
 
     test_filepath = os.path.join(DATA_DIR, "%s_train.svmlight" % (args.test))
     assert (os.path.exists(test_filepath))

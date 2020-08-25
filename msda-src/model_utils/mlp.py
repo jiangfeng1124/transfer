@@ -38,8 +38,8 @@ class MLP(ModelBase):
             self.seq.add_module('dropout', nn.Dropout(p=configs.dropout))
 
         ### initialize
-        nn.init.xavier_normal(self.seq[0].weight)
-        nn.init.constant(self.seq[0].bias, 0.1)
+        nn.init.xavier_normal_(self.seq[0].weight)
+        nn.init.constant_(self.seq[0].bias, 0.1)
         # self.seq[0].bias.requires_grad = False
 
         self.n_out = self.n_d
