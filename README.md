@@ -6,7 +6,7 @@ Code and data for the EMNLP 2018 paper: [Multi-Source Domain Adaptation with Mix
 
 ```
 cd msda-src
-python amazon-chen/senti_unified.py
+python amazon-chen/senti_unified.py (see train_unified.sh)
 options: [-h] [--cuda] --encoder ENCODER [--critic CRITIC]
          [--advreg] --train TRAIN --test TEST [--eval_only]
          [--batch_size BATCH_SIZE]
