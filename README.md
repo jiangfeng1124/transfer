@@ -41,5 +41,5 @@ Note: The official Chen12 dataset doesn't contain a dev split. To perform hyper-
 ```
 
 ### Contact
-Please create an issue or email to \href{mailto:jiang_guo@csail.mit.edu}{jiang_guo@csail.mit.edu} should you have any questions, comments or suggestions.
+Please create an issue or email to [jiang_guo@csail.mit.edu](mailto:jiang_guo@csail.mit.edu) should you have any questions, comments or suggestions.
 
