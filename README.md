@@ -3,8 +3,6 @@ Code and data for the EMNLP 2018 paper: [Multi-Source Domain Adaptation with Mix
 
 ### Running
 
-(to be updated to python3+ and latest versions of pytorch)
-
 ```
 cd msda-src
 # example script for training uni-MS (baseline)
@@ -15,6 +13,7 @@ cd msda-src
 ./train_moe.sh
 (run "python amazon-chen/senti_moe.py -h" for full options)
 ```
+(to be updated to latest versions of pytorch)
 
 Note: The official Chen12 dataset doesn't contain a dev split. To perform hyper-parameter selection, you should create multiple folds by randomly splitting dev sets (1/10) from the (multi-source) training data as a means of cross-validation. They follow the same naming convention of `${domain}_dev.svmlight` under the same directory of the training and test sets.
 
@@ -22,8 +21,6 @@ Note: The official Chen12 dataset doesn't contain a dev split. To perform hyper-
 * Pytorch 0.3/0.4
 * sklearn
 * termcolor
-* python 2.X
-* CUDA 8.5
 
 ### References
 
