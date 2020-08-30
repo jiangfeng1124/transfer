@@ -315,7 +315,7 @@ def train_epoch(iter_cnt, encoder, classifiers, critic, mats, data_loaders, args
         loss.backward()
         optim_model.step()
 
-        if iter_cnt % 30 == 0:
+        if valid_loader and iter_cnt % 30 == 0:
             # [(mu_i, covi_i), ...]
             # domain_encs = domain_encoding(dup_train_loaders, args, encoder)
             if args.metric == "biaffine":
@@ -551,13 +551,16 @@ def train(args):
     )
 
     valid_filepath = os.path.join(DATA_DIR, "%s_dev.svmlight" % (args.test))
-    valid_dataset = AmazonDataset(valid_filepath)
-    valid_loader = data.DataLoader(
-        valid_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=0
-    )
+    if os.path.exists(valid_filepath):
+        valid_dataset = AmazonDataset(valid_filepath)
+        valid_loader = data.DataLoader(
+            valid_dataset,
+            batch_size=args.batch_size,
+            shuffle=False,
+            num_workers=0
+        )
+    else:
+        valid_loader = None
 
     test_filepath = os.path.join(DATA_DIR, "%s_test.svmlight" % (args.test))
     assert (os.path.exists(test_filepath))
@@ -641,13 +644,14 @@ def train(args):
                 optim_model
             )
 
-        (curr_dev, oracle_curr_dev), confusion_mat = evaluate(
-                encoder, classifiers,
-                mats,
-                [train_loaders, valid_loader],
-                args
-            )
-        say("Dev accuracy/oracle: {:.4f}/{:.4f}\n".format(curr_dev, oracle_curr_dev))
+        if valid_loader:
+            (curr_dev, oracle_curr_dev), confusion_mat = evaluate(
+                    encoder, classifiers,
+                    mats,
+                    [train_loaders, valid_loader],
+                    args
+                )
+            say("Dev accuracy/oracle: {:.4f}/{:.4f}\n".format(curr_dev, oracle_curr_dev))
         (curr_test, oracle_curr_test), confusion_mat = evaluate(
                 encoder, classifiers,
                 mats,
@@ -656,16 +660,18 @@ def train(args):
             )
         say("Test accuracy/oracle: {:.4f}/{:.4f}\n".format(curr_test, oracle_curr_test))
 
-        if curr_dev >= best_dev:
+        if valid_loader and curr_dev >= best_dev:
             best_dev = curr_dev
             best_test = curr_test
             print(confusion_mat)
             if args.save_model:
                 say(colored("Save model to {}\n".format(args.save_model + ".best"), 'red'))
                 torch.save([encoder, classifiers, Us, Ps, Ns], args.save_model + ".best")
-        say("\n")
+            say("\n")
 
-    say(colored("Best test accuracy {:.4f}\n".format(best_test), 'red'))
+    if valid_loader:
+        say(colored("Best test accuracy {:.4f}\n".format(best_test), 'red'))
+    say(colored("Test accuracy after training {:.4f}\n".format(curr_test), 'red'))
 
 def test_mahalanobis_metric():
     p = torch.FloatTensor(1, 5).normal_()

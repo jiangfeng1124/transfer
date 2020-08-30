@@ -113,7 +113,7 @@ def train_epoch(iter_cnt, encoder, classifier, critic, train_loaders, target_d_l
         loss.backward()
         optimizer.step()
 
-        if iter_cnt % 30 == 0:
+        if valid_loader and iter_cnt % 30 == 0:
             curr_test, confusion_mat, _  = evaluate(encoder, classifier, valid_loader, args)
 
             # say("\r" + " " * 50)
@@ -228,14 +228,17 @@ def train(args):
     )
 
     valid_filepath = os.path.join(DATA_DIR, "%s_dev.svmlight" % (args.test))
-    assert (os.path.exists(valid_filepath))
-    valid_dataset = AmazonDataset(valid_filepath)
-    valid_loader = data.DataLoader(
-        valid_dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=0
-    )
+    # assert (os.path.exists(valid_filepath))
+    if os.path.exists(valid_filepath):
+        valid_dataset = AmazonDataset(valid_filepath)
+        valid_loader = data.DataLoader(
+            valid_dataset,
+            batch_size=args.batch_size,
+            shuffle=False,
+            num_workers=0
+        )
+    else:
+        valid_loader = None
 
     test_filepath = os.path.join(DATA_DIR, "%s_test.svmlight" % (args.test))
     assert (os.path.exists(test_filepath))
@@ -319,20 +322,25 @@ def train(args):
                     optimizer_reg
                 )
 
-        curr_dev, confusion_mat, _ = evaluate(encoder, classifier, valid_loader, args)
+        if valid_loader:
+            curr_dev, confusion_mat, _ = evaluate(encoder, classifier, valid_loader, args)
+            say("Dev accuracy: {:.4f}\n".format(curr_dev))
+
         curr_test, confusion_mat, _ = evaluate(encoder, classifier, test_loader, args)
         say("Test accuracy: {:.4f}\n".format(curr_test))
 
-        if curr_dev >= best_dev:
+        if valid_loader and curr_dev >= best_dev:
             best_dev = curr_dev
             best_test = curr_test
-            print(confusion_mat)
+            # print(confusion_mat)
             if args.save_model:
                 say(colored("Save model to {}\n".format(args.save_model + ".best"), 'red'))
                 torch.save([encoder, classifier], args.save_model + ".best")
-        say("\n")
+            say("\n")
 
-    say(colored("Best test accuracy {:.4f}\n".format(best_test), 'red'))
+    if valid_loader:
+        say(colored("Best test accuracy {:.4f}\n".format(best_test), 'red'))
+    say(colored("Test accuracy after training {:.4f}\n".format(curr_test), 'red'))
     # if args.save_model:
     #     say("Save final model to {}\n".format(args.save_model))
     #     torch.save(encoder.state_dict(), args.save_model)
